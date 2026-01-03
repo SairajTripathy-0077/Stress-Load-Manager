@@ -15,6 +15,7 @@ app = FastAPI(title="Stress Load Manager")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -131,6 +132,7 @@ def update_item(item: UpdateItem):
         data["exams"],
         data["events"]
     )
+    refresh_from_disk()
 
     return {"status": "updated", "item": target}
 
@@ -156,4 +158,5 @@ def delete_item(item: DeleteItem):
         data["events"]
     )
 
+    refresh_from_disk()
     return {"status": "deleted", "removed": removed}

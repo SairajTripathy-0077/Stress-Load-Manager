@@ -1,0 +1,24 @@
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #38bdf8;
+  border: none;
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+}
