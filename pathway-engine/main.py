@@ -25,6 +25,7 @@ def ingest(data: IngestItem):
 
 @app.get("/debug/state")
 def debug_state():
+    refresh_from_disk()
     return {
         "assignments": len(ingestions.assignments),
         "exams": len(ingestions.exams),
