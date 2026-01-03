@@ -2,10 +2,16 @@
   "assignments": [
     {
       "type": "assignment",
-      "title": "English",
-      "due_in_days": 4
+      "title": "maths ",
+      "due_in_days": 10
     }
   ],
-  "exams": [],
+  "exams": [
+    {
+      "type": "exam",
+      "title": "Midsem",
+      "due_in_days": 10
+    }
+  ],
   "events": []
 }

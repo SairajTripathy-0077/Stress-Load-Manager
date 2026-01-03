@@ -13,7 +13,14 @@ def load_data():
         }
 
     with open(DATA_FILE, "r") as f:
-        return json.load(f)
+        data = json.load(f)
+
+    # Ensure structure always exists
+    return {
+        "assignments": data.get("assignments", []),
+        "exams": data.get("exams", []),
+        "events": data.get("events", [])
+    }
 
 def save_data(assignments, exams, events):
     with open(DATA_FILE, "w") as f:

@@ -69,6 +69,13 @@ RULES:
 - Provide actionable steps
 - Do not invent deadlines
 
+Instructions:
+- DO NOT use markdown symbols (*, #, **)
+- Keep sentences short and clear
+- Use numbered sections
+- Be concise and supportive
+- Focus on actions and priorities
+
 {context}
 
 User question:
