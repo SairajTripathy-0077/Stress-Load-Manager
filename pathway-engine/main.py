@@ -1,21 +1,25 @@
+# main.py
 from fastapi import FastAPI
+from pydantic import BaseModel
 from datetime import datetime
 
-import ingestions   # ✅ IMPORTANT
+import ingestions
 from ingestions import IngestItem, IngestResponse
 from workload import compute_workload_index, detect_stress
-from vectors import explain_workload
+from llm import ask_llm, build_context
 
 app = FastAPI(title="Stress Load Manager")
+
+
+# ✅ REQUIRED MODEL (THIS FIXES AskRequest ERROR)
+class AskRequest(BaseModel):
+    question: str
 
 
 @app.post("/ingest", response_model=IngestResponse)
 def ingest(data: IngestItem):
     ingestions.ingest_item(data)
-    return {
-        "status": "ok",
-        "message": "Data ingested successfully"
-    }
+    return {"status": "ok", "message": "Data ingested"}
 
 
 @app.get("/debug/state")
@@ -27,23 +31,18 @@ def debug_state():
     }
 
 
-@app.get("/query/summary")
-def workload_summary():
-    load = compute_workload_index()
-    stress = detect_stress(load)
-
-    streams = {
-        "assignments": len(ingestions.assignments),
-        "exams": len(ingestions.exams),
-        "events": len(ingestions.events),
-    }
-
-    explanation = explain_workload(load, stress, streams)
+@app.post("/query/ask")
+def ask_question(req: AskRequest):
+    context = build_context()
+    answer = ask_llm(context, req.question)
 
     return {
-        "workloadIndex": load,
-        "stressLevel": stress,
-        "streams": streams,
-        "explanation": explanation,
-        "updatedAt": datetime.utcnow().isoformat()
+        "question": req.question,
+        "answer": answer,
+        "facts": {
+            "assignments": len(ingestions.assignments),
+            "exams": len(ingestions.exams),
+            "events": len(ingestions.events),
+        },
+        "timestamp": datetime.utcnow().isoformat()
     }
