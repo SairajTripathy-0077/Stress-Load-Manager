@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 import ingestions
+from ingestions import refresh_from_disk
 from ingestions import IngestItem, IngestResponse
 from workload import compute_workload
 from llm import ask_llm, build_context
@@ -33,7 +34,7 @@ def debug_state():
 
 @app.post("/query/ask")
 def ask_question(req: AskRequest):
-
+    refresh_from_disk()
     # 1️⃣ Compute workload intelligence
     workload = compute_workload(
         ingestions.assignments,

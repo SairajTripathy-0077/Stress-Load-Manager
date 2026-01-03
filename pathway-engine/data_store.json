@@ -1,0 +1,16 @@
+{
+  "assignments": [
+    {
+      "type": "assignment",
+      "title": "English",
+      "due_in_days": 4
+    },
+    {
+      "type": "assignment",
+      "title": "AutoCAD",
+      "due_in_days": 10
+    }
+  ],
+  "exams": [],
+  "events": []
+}
