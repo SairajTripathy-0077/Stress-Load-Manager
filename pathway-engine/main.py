@@ -5,7 +5,7 @@ from datetime import datetime
 
 import ingestions
 from ingestions import IngestItem, IngestResponse
-from workload import compute_workload_index, detect_stress
+from workload import compute_workload
 from llm import ask_llm, build_context
 
 app = FastAPI(title="Stress Load Manager")
@@ -33,9 +33,40 @@ def debug_state():
 
 @app.post("/query/ask")
 def ask_question(req: AskRequest):
-    context = build_context()
+
+    # 1️⃣ Compute workload intelligence
+    workload = compute_workload(
+        ingestions.assignments,
+        ingestions.exams,
+        ingestions.events
+    )
+
+    # 2️⃣ Build AI-safe context (NO hallucinations)
+    context = f"""
+WORKLOAD SUMMARY:
+Stress level: {workload['stress_level']}
+Workload score: {workload['score']}
+
+DUE TODAY:
+Assignments: {len(workload['today']['assignments'])}
+Exams: {len(workload['today']['exams'])}
+Events: {len(workload['today']['events'])}
+
+DUE THIS WEEK:
+Assignments: {len(workload['this_week']['assignments'])}
+Exams: {len(workload['this_week']['exams'])}
+Events: {len(workload['this_week']['events'])}
+
+DUE LATER:
+Assignments: {len(workload['later']['assignments'])}
+Exams: {len(workload['later']['exams'])}
+Events: {len(workload['later']['events'])}
+"""
+
+    # 3️⃣ Ask LLM with structured reasoning
     answer = ask_llm(context, req.question)
 
+    # 4️⃣ Return clean response
     return {
         "question": req.question,
         "answer": answer,
@@ -43,6 +74,12 @@ def ask_question(req: AskRequest):
             "assignments": len(ingestions.assignments),
             "exams": len(ingestions.exams),
             "events": len(ingestions.events),
+            "stress_level": workload["stress_level"],
+            "workload_score": workload["score"]
         },
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+
+

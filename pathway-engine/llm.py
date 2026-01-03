@@ -58,10 +58,16 @@ def ask_llm(context: str, question: str) -> str:
     prompt = f"""
 You are a calm, supportive student productivity assistant.
 
+If the user asks for planning, provide:
+1) Today plan
+2) Next 7-day plan
+3) What can wait
+
 RULES:
-- Use ONLY the facts provided
-- Do NOT invent numbers
-- Be practical and friendly
+- Use workload analysis strictly
+- Focus on next 7 days
+- Provide actionable steps
+- Do not invent deadlines
 
 {context}
 
