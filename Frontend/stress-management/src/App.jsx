@@ -12,7 +12,7 @@ export default function App() {
   return (
     <div style={{ padding: 20 }}>
       <h2>Stress Load Manager</h2>
-      <IngestForm onIngest= {refreshKey} />
+      <IngestForm onIngest= {refresh} />
       <LiveData refreshKey={refreshKey} />
       <hr />
       <AskAI />

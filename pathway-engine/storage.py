@@ -6,14 +6,10 @@ DATA_FILE = "data_store.json"
 
 def load_data():
     if not os.path.exists(DATA_FILE):
-        return {
-            "assignments": [],
-            "exams": [],
-            "events": []
-        }
+        return {"assignments": [], "exams": [], "events": []}
 
     with open(DATA_FILE, "r") as f:
-        data = json.load(f)
+        return json.load(f)
 
     # Ensure structure always exists
     return {

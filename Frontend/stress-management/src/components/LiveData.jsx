@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchAllData, deleteItem, updateItem } from "../api";
 
-export default function LiveData() {
+export default function LiveData({refreshKey}) {
   const [data, setData] = useState({
     assignments: [],
     exams: [],
@@ -18,7 +18,7 @@ export default function LiveData() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [refreshKey]);
 
   const startEdit = (category, index, item) => {
     setEditing({ category, index });

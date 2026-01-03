@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ingestData } from "../api";
 
-export default function IngestForm(onIngest) {
+export default function IngestForm({onIngest}) {
   const [type, setType] = useState("assignment");
   const [title, setTitle] = useState("");
   const [days, setDays] = useState("");
@@ -13,9 +13,9 @@ export default function IngestForm(onIngest) {
       title,
       due_in_days: Number(days)
     });
+    onIngest();
     setTitle("");
     setDays("");
-    onIngest();
   };
 
   return (

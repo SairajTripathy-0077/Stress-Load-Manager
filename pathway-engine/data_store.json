@@ -1,17 +1,5 @@
 {
-  "assignments": [
-    {
-      "type": "assignment",
-      "title": "maths ",
-      "due_in_days": 10
-    }
-  ],
-  "exams": [
-    {
-      "type": "exam",
-      "title": "Midsem",
-      "due_in_days": 10
-    }
-  ],
+  "assignments": [],
+  "exams": [],
   "events": []
 }
