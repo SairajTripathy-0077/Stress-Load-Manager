@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://stress-load-manager.onrender.com";
 
 export async function ingestData(payload) {
   const res = await fetch(`${BASE_URL}/ingest`, {
@@ -39,7 +39,7 @@ export async function deleteItem(category, index) {
 }
 
 export async function updateItem(category, index, updatedData) {
-  const res = await fetch("http://127.0.0.1:8000/data/update", {
+  const res = await fetch(`${BASE_URL}/data/update`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
