@@ -101,4 +101,9 @@ def delete_item(category: str, index: int): # Parameters moved from model to URL
     ingestions.refresh_from_disk() # Sync in-memory data
     return {"status": "deleted", "removed": removed}
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 
