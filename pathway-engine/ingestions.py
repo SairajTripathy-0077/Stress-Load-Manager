@@ -1,28 +1,22 @@
-# ingestions.py
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Literal
 from storage import load_data, save_data
 
-# Load persisted data at startup
+# Initial load from disk into memory
 _data = load_data()
-
-# In-memory stores (synced with disk)
 assignments = _data["assignments"]
 exams = _data["exams"]
 events = _data["events"]
 
 class IngestItem(BaseModel):
+    # Stricter validation prevents bad data from entering the system
     type: Literal["assignment", "exam", "event"]
-    title: str
-    due_in_days: int
+    title: str = Field(..., min_length=1)
+    due_in_days: int = Field(..., ge=0) # Must be 0 or higher
 
 def ingest_item(item: IngestItem):
-    # Convert to plain dict (same as before)
-    doc = {
-        "type": item.type,
-        "title": item.title,
-        "due_in_days": int(item.due_in_days)
-    }
+    """Adds a new item and immediately saves to disk."""
+    doc = item.dict()
 
     if item.type == "assignment":
         assignments.append(doc)
@@ -31,16 +25,12 @@ def ingest_item(item: IngestItem):
     else:
         events.append(doc)
 
-    # Persist immediately (NEW)
     save_data(assignments, exams, events)
 
-class IngestResponse(BaseModel):
-    status: str
-    message: str
-
 def refresh_from_disk():
+    """Syncs the in-memory lists with the current JSON file content."""
     data = load_data()
-
+    
     assignments.clear()
     exams.clear()
     events.clear()

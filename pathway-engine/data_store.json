@@ -1,11 +1,5 @@
 {
-  "assignments": [
-    {
-      "type": "assignment",
-      "title": "maths",
-      "due_in_days": 2
-    }
-  ],
+  "assignments": [],
   "exams": [],
   "events": []
 }
